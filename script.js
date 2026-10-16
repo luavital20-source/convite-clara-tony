@@ -1,53 +1,35 @@
 (function () {
-  // "Until I Found You" — Stephen Sanchez (Official Audio)
-  const VIDEO_ID = 'MlThQTo6D8A';
-
   const gate = document.getElementById('gate');
   const seal = document.getElementById('seal');
   const muteBtn = document.getElementById('muteBtn');
+  const music = document.getElementById('music');
 
-  // ---------- Música (YouTube IFrame API) ----------
-  // O player começa mudo (o navegador permite autoplay assim) e é
-  // desmutado no toque do selo, que conta como interação do usuário.
-  let player = null;
-  let ready = false;
-  let wantsSound = false;
+  // ---------- Música ----------
+  // O play() precisa ser chamado direto dentro do toque do convidado:
+  // é isso que faz o iPhone (e qualquer navegador) liberar o som.
+  let pausedByUser = false;
 
-  window.onYouTubeIframeAPIReady = function () {
-    player = new YT.Player('yt', {
-      videoId: VIDEO_ID,
-      width: 1, height: 1,
-      playerVars: { autoplay: 1, mute: 1, loop: 1, playlist: VIDEO_ID, controls: 0, disablekb: 1, fs: 0, playsinline: 1 },
-      events: {
-        onReady: () => { ready = true; if (wantsSound) startMusic(); },
-      },
-    });
-  };
-  const tag = document.createElement('script');
-  tag.src = 'https://www.youtube.com/iframe_api';
-  document.head.appendChild(tag);
-
-  function startMusic() {
-    if (!ready) return;
-    player.seekTo(0, true);
-    player.unMute();
-    player.setVolume(70);
-    player.playVideo();
-    muteBtn.classList.remove('muted');
-    muteBtn.setAttribute('aria-label', 'Silenciar música');
+  function setPlayingUI(playing) {
+    muteBtn.classList.toggle('muted', !playing);
+    muteBtn.setAttribute('aria-label', playing ? 'Pausar música' : 'Tocar música');
   }
+  function playMusic() {
+    const p = music.play();
+    if (p && p.catch) p.catch(() => setPlayingUI(false));
+  }
+  music.addEventListener('play', () => setPlayingUI(true));
+  music.addEventListener('pause', () => setPlayingUI(false));
 
   muteBtn.addEventListener('click', () => {
-    if (!ready) return;
-    if (player.isMuted() || player.getPlayerState() !== YT.PlayerState.PLAYING) {
-      player.unMute(); player.playVideo();
-      muteBtn.classList.remove('muted');
-      muteBtn.setAttribute('aria-label', 'Silenciar música');
-    } else {
-      player.mute();
-      muteBtn.classList.add('muted');
-      muteBtn.setAttribute('aria-label', 'Tocar música');
-    }
+    if (music.paused) { pausedByUser = false; playMusic(); }
+    else { pausedByUser = true; music.pause(); }
+  });
+
+  // Pausa ao sair do convite (trocar de app/aba) e retoma ao voltar
+  let wasPlaying = false;
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { wasPlaying = !music.paused; music.pause(); }
+    else if (wasPlaying && !pausedByUser) playMusic();
   });
 
   // ---------- Abertura ----------
@@ -55,8 +37,7 @@
   function openInvite() {
     if (gate.classList.contains('opening')) return;
     gate.classList.add('opening');
-    wantsSound = true;
-    startMusic();
+    playMusic();
     // 1) anel acende e o texto se dissolve; 2) abertura circular revela a capa
     // centro e raio do anel do monograma: a abertura nasce dali
     const r = seal.getBoundingClientRect();

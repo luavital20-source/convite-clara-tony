@@ -19,7 +19,6 @@ body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-weigh
 body.locked{overflow:hidden;height:100svh}
 img{max-width:100%;display:block}
 svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.yt-hidden{position:fixed;left:0;bottom:0;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1}
 
 /* ---------- tipografia comum ---------- */
 .eyebrow{font-size:.66rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
