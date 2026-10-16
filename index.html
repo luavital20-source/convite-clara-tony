@@ -24,24 +24,26 @@
 <!-- Música (YouTube, oculto) -->
 <div id="yt" class="yt-hidden" aria-hidden="true"></div>
 
-<!-- ============ ABERTURA (ENVELOPE) ============ -->
+<!-- ============ ABERTURA ============ -->
 <section id="gate" class="gate" aria-label="Abrir convite de Clara e Tony">
-  <div class="env">
-    <div class="env-back"></div>
-    <div class="env-letter">
-      <img src="assets/monograma.png" alt="">
-      <p>Clara &amp; Tony</p>
-      <span>04 · 12 · 2026</span>
-    </div>
-    <div class="env-front"></div>
-    <div class="env-flap"></div>
-    <button id="seal" class="seal" aria-label="Toque no selo para abrir o convite">
+  <div class="gate-bg"></div>
+  <div class="gate-shade"></div>
+  <div class="gate-inner">
+    <p class="gate-kicker">Você recebeu um convite</p>
+    <button id="seal" class="gate-mono" aria-label="Toque para abrir o convite">
+      <svg class="gate-ring" viewBox="0 0 200 200" aria-hidden="true">
+        <circle class="r-outer" cx="100" cy="100" r="97"/>
+        <circle class="r-inner" cx="100" cy="100" r="89"/>
+      </svg>
+      <span class="gate-glow"></span>
       <img src="assets/monograma-claro.png" alt="">
     </button>
+    <p class="gate-names">Clara <span>&amp;</span> Tony</p>
+    <p class="gate-date">04 · 12 · 2026</p>
+    <p class="gate-hint">Toque para abrir</p>
   </div>
-  <p class="gate-to">Para você, com carinho</p>
-  <p class="gate-hint">Toque no selo para abrir</p>
 </section>
+<div class="iris-ring" aria-hidden="true"></div>
 
 <main>
 
@@ -163,14 +165,8 @@
           <div class="item reveal">
             <span>01</span>
             <div>
-              <h3>Nossa paleta</h3>
-              <p>Branco, bege, off-white e azul-marinho, numa proposta clássica e minimalista, com elementos rústicos naturais.</p>
-              <div class="swatches">
-                <i style="background:#ffffff" title="Branco"></i>
-                <i style="background:#f6f1e7" title="Off-white"></i>
-                <i style="background:#ddcdb4" title="Bege"></i>
-                <i style="background:#14203a" title="Azul-marinho"></i>
-              </div>
+              <h3>Nossa decoração</h3>
+              <p>Preparamos cada detalhe numa proposta clássica e minimalista, com elementos rústicos naturais.</p>
             </div>
           </div>
           <div class="item reveal">

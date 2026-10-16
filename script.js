@@ -50,18 +50,33 @@
     }
   });
 
-  // ---------- Abrir envelope ----------
+  // ---------- Abertura ----------
+  const iris = document.querySelector('.iris-ring');
   function openInvite() {
-    if (gate.classList.contains('open')) return;
-    gate.classList.add('open');
+    if (gate.classList.contains('opening')) return;
+    gate.classList.add('opening');
     wantsSound = true;
     startMusic();
+    // 1) anel acende e o texto se dissolve; 2) abertura circular revela a capa
+    // centro e raio do anel do monograma: a abertura nasce dali
+    const r = seal.getBoundingClientRect();
+    [gate, iris].forEach((el) => {
+      el.style.setProperty('--cx', r.left + r.width / 2 + 'px');
+      el.style.setProperty('--cy', r.top + r.height / 2 + 'px');
+      el.style.setProperty('--r0', r.width * 0.445 + 'px');
+    });
     setTimeout(() => {
-      document.body.classList.remove('locked');
       window.scrollTo(0, 0);
-    }, 1500);
+      document.body.classList.remove('locked');
+      gate.classList.add('iris');
+      iris.classList.add('go');
+    }, 650);
+    setTimeout(() => {
+      gate.classList.add('done');
+      iris.remove();
+    }, 2500);
   }
-  seal.addEventListener('click', openInvite);
+  gate.addEventListener('click', openInvite);
 
   // ---------- Animações ao rolar ----------
   const io = new IntersectionObserver((entries) => {
